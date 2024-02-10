@@ -1,8 +1,10 @@
+import { useBearStore } from "@/stores/bears";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 
 const IndexPage: React.FC = () => {
-  const [data, setData] = useState<any>(null);
+  const bears = useBearStore((state) => state.bears);
+  const increaseBears = useBearStore((state) => state.increaseBears);
 
   useEffect(() => {
     const url =
@@ -22,16 +24,14 @@ const IndexPage: React.FC = () => {
       body: body,
     })
       .then((response) => response.json())
-      .then((data: any) => {
-        console.log(data);
-        setData(JSON.stringify(data));
-      })
+      .then((data: any) => console.log(data))
       .catch((error) => console.error("Error:", error));
   }, []);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>{data}</Text>
+      <Text>Bears: {bears}</Text>
+      <Button title="Increase bears" onPress={increaseBears} />
     </View>
   );
 };
